@@ -1,0 +1,297 @@
+EUREKA SERVER
+
+step 01) - put @EnableEurekaServer in main springboot class
+
+step 02 ->You can either configure application.properties or application.yml
+
+-------------In application.properties-----------------
+server.port=8761
+eureka.client.register-with-eureka=false
+eureka.client.fetch-registry=false
+--------------------------------------
+ 
+eureka:
+  client:
+    register-with-eureka: false  #we declare because we dont want to register this automatically
+    fetch-registry: false
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+
+---------------------------Done with Eureka---------------------
+---------------------------------------------  
+     
+step 03) U need to have eureka client dependencies in ur micro service application 
+
+1)   <java.version>11</java.version>
+     <spring-cloud.version>2021.0.3</spring-cloud.version>
+
+2) <dependency>
+      <groupId>org.springframework.cloud</groupId>
+      <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+   </dependency>
+
+3) - You can put this dependency management after <dependencies> </dependencies>
+
+<dependencyManagement>
+  <dependencies>
+    <dependency>
+	<groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+	<type>pom</type>
+        <scope>import</scope>
+    </dependency>
+  </dependencies>
+</dependencyManagement>
+
+step 03) Re-run application
+step 04) You can check on defaultport that service will register or not
+
+step 05)u can change application name 
+-> u need to mention (spring.application.name = NameOfApplication) in application.yml file
+
+step 06) u can used registerd name with REST API
+
+------------------------------------------------------------------------------------------------------
+Consider you have 2 project
+1) User-service -parent
+2) Department Service
+
+Note - Put @EnableEurekaServer in main springboot class
+
+
+3) Service Registry (Eureka)
+
+step 01) create one project, and add EUREKA SERVER dependency
+step 02) application.yml
+
+server:
+  port: 8761
+  
+
+eureka:
+  client:
+    register-with-eureka: false
+    fetch-registry: false
+  instance:
+    hostname: localhost
+    
+step 03) add dependency in both microserviceproeject
+1) <properties>
+     <java.version>11</java.version>
+     <spring-cloud.version>2021.0.3</spring-cloud.version>  //this is main
+   </properties>
+---------------------
+2) Add Eureka Client dependency  
+
+<dependency>
+   <groupId>org.springframework.cloud</groupId>
+   <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+</dependency>
+-------------------
+3)  Add dependency management
+
+<dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.springframework.cloud</groupId>
+        <artifactId>spring-cloud-dependencies</artifactId>
+        <version>${spring-cloud.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+[Note- u can add it after all dependency and before build]
+-----------------------------------------------------------------
+U need to add following for all microservice REST API for register in Eureka
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+---------------------------------------
+API GATEWAY
+
+step 01) Create Project and add following dependency
+            1) Gateway dependency
+            2) Eureka client
+            3) Actuator
+
+step 02) declare main application @EnableEurekaClient
+
+--------------------------------------------------------
+
+Circuit breaker - it will check which servuice is not running and will notify
+
+How to implement Hystrix library
+
+step 01) add hystrix dependency in API GATEWAY
+
+step 02) put @EnableHystrix in main class
+
+step 03) create FallBackRestController
+
+        @GetMapping("/userServiceFallBack")
+        public String userServiceFallBackMethod() {
+		return "User service is taking longer than expected"+"Please try again later";
+	}
+	
+	@GetMapping("/departmentServiceFallBack")
+	public String departmentServiceFallBackMethod() {
+		return "Department service is taking longer than expected"+"Please try again later";
+	}
+-------------
+step 04) configure application.yml in GATEWAY project
+---------------
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: USER-SERVICE
+          uri: lb://USER-SERVICE
+          predicates:
+          - Path=/user/**
+          filters:
+          - name: CircuitBreaker
+            args:
+             name: USER-SERVICE
+             fallbackuri: forward:/userServiceFallBack  
+              
+             
+          
+          
+        - id: DEPARTMENT-SERVICE
+          uri: lb://DEPARTMENT-SERVICE
+          predicates:
+          - Path=/department/**
+          filters:
+          - name: CircuitBreaker
+            args:
+              name: DEPARTMENT-SERVICE
+              fallbackuri: forward:/departmentServiceFallBack
+     
+hystrix:
+  command:
+   fallbackcmd:
+    execution:
+     isolation:
+      thread:
+       timeoutInMilliseconds: 4000
+       
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream
+         
+ --------------------------------------------------------------------------
+Note - if error occured it is because of version
+so u need to change as below
+--------
+01)        <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.4.RELEASE</version>                     //yOu need to change version only
+		<relativePath/> <!-- lookup parent from repository -->
+	   </parent>
+----------------
+02)
+
+ <java.version>11</java.version>
+<spring-cloud.version>Hoxton.SR8</spring-cloud.version>  //u need to change as Hoxton.SR8
+------------------------------------------------------------------------------------------------------------
+HYSTRIX DASHBOARD
+
+STEP 01) Add spring-cloud-starter-netflix-hystrix-dashboard dependency, Eureka client,
+
+-------------------------
+Hystrix Dashboard
+
+<dependency>
+  <groupId>org.springframework.cloud</groupId>
+  <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+  <version>2.2.9.RELEASE</version>
+</dependency>
+
+-------------------------------------
+
+step 02) put annotation 1) @EnableEurekaClient
+                        2) @EnableHystrixDashboard
+in main application
+
+step 03) application.yml file in Hystrix Dashboard project
+(Note: if u use application.properties then it will not run)
+
+server:
+  port: 8181
+  
+spring:
+  application:
+    name: hystrix-dashboard
+    
+hystrix:
+  dashboard:
+    proxy-stream-allow-list: "*"
+  
+------------------------------------------------
+http://localhost:9091/actuator/hystrix.stream //it will check hystrix running or not
+
+http://localhost:8181/hystrix  //it will open hystrix dashboard
+
+-----------------------------------------------------------------
+CONFIG-SERVER project
+
+
+step 01) Create project and add 
+             1) config-server dependency
+             2) Eureka client
+
+step 02) put annotation in main application
+             1) 
+             2)
+ 
+--------------------------------------------------------
+Zipkin and sleuth
+
+step 01) search zipkin server on google, Go to Quickstart, then go to latest release then it will be downloaded
+
+step 02) move that download file in you project folder and open cmd in that folder 
+        fire command-> 1) dir //u can see details of zipkin
+                    -> 2) java -jar [zipkin-server-2.23.18-exec.jar] //in that box this u can get in cmd as well
+step 03) open zipkin url in google
+
+step 04) Add dependency zipkin client and sleuth dependency in ur microservce project
+
+step 05) In application.yml file, u need to add in botn microservices
+             
+          zipkin:
+             base-url: http://127.0.0.1:9411/ 
+------------------------------------------------------------
+server:
+  port: 9002
+
+spring:
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/book
+    username: root
+    password: Amit@123
+  jpa:
+    hibernate.ddl-auto: update
+    generate-ddl: true
+    show-sql: true
+---------------------------------------------
+que 01) after registered then it will be cancelled application?
+que 02) if I am not config eureka.register-with- = true then also appliaction will be registered

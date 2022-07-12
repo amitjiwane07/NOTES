@@ -1,0 +1,70 @@
+npm install -g @angular/cli =  it is used to install angular
+npm install -g bootstrap = used to install bootstrap
+ng new hello-world = it used to create new project.
+ng-serve = it is used to start application
+ng-build = it is used to convert executable code which u can share with the client
+Alt+ctrl+shift+T = it is used to open terminal on eclipse
+ng generate component (component_name) OR ng g c (compName) == it is used to generate component
+
+dataBinding = communication of data between templats and model classes
+Oninit = when application starts it takes place, whenevwer constructor is created
+directive = it allows developers to create custom html tags
+
+template = it is used to generate HTMLcontent
+
+Components = this are like building block which is used to control HTML view
+OR it is the building blocks of angular application, the main job
+@Component = it is used to convert typescript class to angular component
+
+@NgModule = it is used to convert typescript/javascript class into angular module
+
+Service = The main purpose of the service is to reusability instead of writing a functionality inside a component,
+seperating into aservice will make itusable inother component as well 
+
+pipes => pipes allow us to transform the data before displaying it in the view
+
+interpolation = bind data from ts file html 
+
+Modules = An angular building blocks
+
+Just-In-Time compiler
+== when we ask employee class agin and again then technically it will create object again and again 
+bt JIT will provide already created object
+Directive = it is the instructions in DOM which is used to specify component and business logic
+it is used to pass messaged from component to service and service to component
+Note:
+Angular application starts from Index.html, if create one component and done will all functionality in this component and 
+if you want to reflect it on your application then you need to place your selector name in index.html page
+
+subscribe = it is used to extract data one by one, if u store data in response then it will save data as objects, bt u subscribe then it will as json format
+
+STEPS:
+1)ng new hello-world = it used to create new project.
+2)ng-serve = it is used to start application
+3) ng g c (componentName)=== used to generate component
+4) ng g interface (interfaceName) === used to generate interface
+5) ng g service (serviceName)
+6) after creating service then copy service class and paste it in app.module.ts inside provides and also import from servoce
+7) you need to have HttpClientModule,
+you can place it inside appmodule.ts inside imports
+
+{} => means u are fetching
+[] => means setting tag attribute
+STEPS HOW ANGULAR WORKS
+
+employee.ts => employee.service.ts => employee.component.ts => html
+
+step01= create interface file
+step02 = 
+
+diff module and component?
+ans = module is like a package, In package we have class(component)
+what is Angular CLI?
+ans = Angular CLI is a great tool to create and work with Angular Applications.
+
+What is the difference between ngOnInit and constructor?
+Constructor initializes class members. 
+ngOnInit() is a place to put the code that we need to execute at very first as soon as the class is instantiated
+
+
+

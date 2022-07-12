@@ -1,0 +1,361 @@
+ngOnInIt
+=> it is a lifecycle hook, it is called when an component is initialized
+
+ngIf
+
+-> ts file
+public displayName=true;
+-> HTML file
+<h1 *ngIf="displayName">CodeEvalution</h1>  //if display name is true then it will show otherwise not
+
+
+--Else----
+->HTML
+<h1 *ngIf="displayName; else elseBlock">CodeEvalution</h1>
+
+<ng-template #elseBlock> //#elseBlock - it is reference
+<h1>Name is hidden</h1> //if condition in ngIf is false then this is showed
+</ng-template>
+
+==if the displayName is true then content inside that will shown 
+==if the displayNmae is false then elseblock will be shown
+
+----------------------------------------------------------------------------------------------
+
+*ngFor
+
+-> ts File
+public colors = ["Red", "Blue", "Green", "Yellow"];
+
+-> HTML
+<div *ngFor="let color of colors">
+<h1>{{color}}</h1>
+</div>
+ ----------------
+EXAMPLE-01
+<div *ngFor="let color of colors; index as i">
+<h1>{{i}} {{color}}</h1> //it will show index number
+</div>
+------------------
+
+EXAMPLE-02
+<div *ngFor="let color of colors; first as f">
+<h1>{{f}} {{color}}</h1> //it will show 1st element true other false
+</div>
+-------------------------------------------------------------------------------------------
+@Input = it is used to get input from parent
+@Output = it is used to return output to the parent
+
+parent => app component
+child => test component
+
+INPUT EXAMPLE (from Parent to child)
+step 01) app.component.ts
+public name="Amit";
+
+step 02) app.component.html
+<app-test [parentData]=name > </app-test>
+
+step 03) test.component.ts
+
+@Input()
+public parentData="";
+
+step 04) => test.component.html
+<h1> "Hello, "+parentData</h1> // it will show Hello, Amit
+
+----------------------------------------------------
+OUTPUT (from child to parent)
+
+step 01) => test.component.ts
+@Output()
+public childEvent = new EventEmitter();
+
+where EventEmitter = inbuilt,
+      childEvent = u can name anything
+
+step 02) => test.component.html
+<button (click)=fireEvent() >Click for Output</button> // when you click on button it will show output
+
+stpe 03) => test.component.ts
+
+create method
+fireEvent(){
+this.childEvent.emit('here you can put message anything');
+}
+
+step 04) app.component.html
+<app-test (childEvent)="message=$event" ></app-test>
+
+step 05) app.component.html
+ <h1>{{message}}</h1>  //it will show the output
+------------------------------------------------------------------------------
+PIPES
+public name="Codevelution";
+<h1>{{name | uppercase}} // name will be uppercase = CODEVALUTION
+<h1>{{name | lowercase}} // name will be lowercase = codevalution
+<h1>{{ name | slice:3 }}</h1> //it will starts from index 3 = evalution
+<h1>{{ name | slice:3:5 }}</h1> //it will starts from index 3 and end 5 (Not inclidng 5th index) = ev
+<h1>{{0.25 | percent}}</h1> //output = 25%
+<h1>{{0.25 | currency}}</h1> //bydefault it Dollor //output = $0.25
+<h1>{{0.25 | currency: 'Rupee'}}</h1> //output = (rupeeSign)0.25
+<h1>{{0.25 | currency: 'GBP' : 'code'}}</h1>  //output = GBP 0.25
+
+Date PIPES
+test.component.ts
+
+public date =new Date
+
+test.component.html
+=> <h1>{{ date }}</h1> //output = Tue Mar 15 2022 11:16:32 GMT+0530 (India Standard Time)
+=> <h1>{{ date | date:'short'}}</h1> //output = 3/15/22, 11:17 AM
+=><h1>{{ date | date:'shortDate'}}</h1> //it shows only Date // 3/15/22
+=><h1>{{ date | date:'shortTime'}}</h1> //it shows only time // 11:19 AM
+
+----------------------------------------------------------------------------------
+SERVICES
+=>it is a class for specific purpose
+01) Share Data = we need to share data in multiple components in such scenario service is responsible to share data
+02) Implements Application Logic - we can implement our business logic in service class
+
+-----------------------------------------------------------------------------------
+Dependency Injection
+=> DI as a design pattern
+:- Dependency Injection is a coding pattern in which a class receives its dependency from external sources,
+rather than creating them itself
+
+INJECTOR
+=> Injector is like a container where we can register all the dependency
+-----------------------------------------------------------------------------------
+DI as framework 
+steps for dependency 
+step 01) Define the EmployeeService class
+=> create service component
+
+step 02) Register with Injector
+=> you need to specify name of service class inside app.module => inside provider 
+
+step 03) Declare dependecy as EmployeeList and EmployeeDetail
+-----------------------------------------------------------------------------------
+
+@Injectable()
+=> it is declare on the service class
+=> this is tells the angular that this service might be injected
+
+-----------------------------------------------------------------------------------
+HTTP mechanism in Angular
+=> Http is an mediator of service class and Database
+step 01) service class send request to http, and http sends request to database
+step 02) database return response to the http and http returns observable to the service class
+-----------------------------------------------------------------------------------
+Observable 
+=> it is nothing bt the http response which will arrive asynchronously over time
+=> Observable in Angular is a feature that provides support for delivering messages between different parts of your single-page application. 
+   This feature is frequently used in Angular because it is responsible for handling multiple values, asynchronous programming in Javascript, 
+   and also event handling processes.
+
+subscribe 
+=> if the subscribe then you can receive the data
+
+----------------------------------------------------------------------------
+Http, Observable and RxJs
+
+step 01) Http get request from employee service
+step 02) Receive the observable and cast it into an employee array
+step 03) Subscribe to the observale from employeeList and EmployeeDatail
+step 04) Assign the employee array to local variable
+
+RxJS
+=> Reactive extension for javascript
+=> External library to work with observable
+
+-----------------------------------------------------------------------------
+SERVICE CLASSS
+
+private url:string="/assets/data/employee.json"; // we give path because we have data inside employee.json
+
+constructor(private http : HttpClient) { } // this http we can use only in the service class to get data from the server
+ 
+  getEmployee2(){
+	return this.http.get(this.url)
+}
+
+-------------------------------------------------------------------------------
+Router
+=> Any Angular application you build is going to have a multiple components,
+each components with its own view so we need a way to navigate between different views as and
+when the user performs some actions for this purpose we make use of angular router
+
+<router-outlet></router-outlet> //this will specify where the routing component will show
+
+Step 01)
+component = app-routing.module.ts
+
+const routes: Routes = [
+	{path: 'department', component: DepartmentListComponent}, // 'department' = it is endpoint
+	{path: 'employees', component: EmployeeListComponent}    // 'employees' = it is endpoint
+];
+
+
+Step 02)
+app.component.html
+
+<a routerLink='department' routerLinkActive="Active">Department</a> // routerLink= will navigate to the component and routerLinkActive will work as click and unlick 
+<a routerLink='employees' routerLinkActive="Active">Employee</a> // routerLink= will navigate to the component and routerLinkActive will work as click and unlick
+
+----------------------------------------------
+WildCard
+
+RouterModule.forRoot([
+      { path: 'welcome', component: WelcomeComponent },
+      { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+      { path: '**', component: 'pageNotFoundComponent' }
+    ])
+-----------------------------------
+Case 1 pathMatch:'full': In this case, when app is launched on localhost:4200 (or some server) 
+the default page will be welcome screen, since the url will be https://localhost:4200/
+
+If https://localhost:4200/gibberish this will redirect to pageNotFound screen because of path:'**' wildcard
+------------------------------
+Case 2 pathMatch:'prefix':
+
+If the routes have { path: '', redirectTo: 'welcome', pathMatch: 'prefix' }, 
+now this will never reach the wildcard route since every url would match path:'' defined.
+
+-------------------------------------------------------------------------------------
+router service
+=> when we navigating from code we use this service
+
+-----------------------------------------------
+ngForm = it gives valuable information about form
+* it tells what are the values of form control are and whether the values are valid or invalid
+
+example
+
+<form #userForm="ngForm">
+
+</form>
+
+where userForm = it is template reference variable
+ngForm = ngForm directive exports itself as a string ngform and by assigning it to reference variable
+we have reference to the directive itself
+
+that directives gives the access of form control
+
+<form>
+
+<div class="form-group">
+<label>Name</label>
+<input type="text" class="form-control" name="userName" ngModel> 
+//ngModel =  to get information about what you are entering value u need to put ngModel inside input tag
+//name="userName" if you put inside the input then the entered value stored as userName
+// like if u put Amit then output = userName = "Amit"  
+</div>
+
+<div class="form-group mb-2">
+<label>Email</label>
+<input type="email" class="form-control" ngModel>
+// to get information about what you are entering value u need to put ngModel inside input tag
+</div>
+
+</form>  
+-------------------------------------
+Note :- when we want databinding in templateDrivenForm
+        we have three directives
+        1) ngForm
+        2) ngModel
+        3) ngModelGroup
+
+What is NgModelGroup?
+The NgModelGroup is used to create a top-level form group Instance, 
+and it binds the form to the given form value. 
+Syntax: <div ngModelGroup="name"></div> NgModule: Module used by NgModelGroup is: FormsModule
+
+* if u want to group together form fields then u should go for ngModelGroup
+
+example
+
+<div ngModelGroup="address">
+<div class="form-group">
+<label>Street</label>
+<input type="text" name="street" ngModel>
+</div>
+
+<div class="form-group">
+<label>Street</label>
+<input type="text" name="street" ngModel>
+</div>
+
+<div class="form-group">
+<label>City</label>
+<input type="text" name="city" ngModel>
+</div>
+
+<div class="form-group">
+<label>State</label>
+<input type="text" name="state" ngModel>
+</div>
+
+<div class="form-group">
+<label>Pin Code</label>
+<input type="text" name="pinCode" ngModel>
+</div>
+
+</div>
+
+// all the four elements (street, city, state, pincode) are enclosed with address (ngModelGroup="address)
+// ngModelDirective = that directive we assign a name as Address
+
+---------------------------------------------------------------
+ng-touched = if u visited the value
+ng-untouched = if u not visited the value
+
+ng-pristine = if u not change the value, then it should be pristine
+ng-dirty = if u change the value the it should be dirty
+
+ng-valid = if the input is valid then ng-valid class applied
+//if value is entered then ng-valid applied
+
+ng-invalid = if the input is invalid then ng-invalid is applied
+//if value is missing then ng-invalid applied
+
+example:-
+
+<div class="form-group mb-2">
+<label>Name</label>
+<input type="text" #name class="form-control" name="userName" ngModel>
+</div>
+
+{{name.className}} //name is reference 
+//it show the angular class applied like ng-touched or ng-untouched, ng-valid or ng-invalid, ng-pristine or ng-dirty
+
+------------------------------------------------------------------------------
+how to show  database data in your form
+
+step 01) create class -> ng generate class User(class name)
+
+step 02) user.ts
+export class User {
+	constructor(
+		public name:string,
+		public email:string,
+		public phone:number,
+		public topic:string,
+		public timePreference:string,
+		public subscribe:boolean
+	){}
+}
+
+step 03) app.component.ts
+-> userModel = new User("Amit","amit@gmail.com",989898,"Hello" ,"morning", true );
+// u need to pass the argument which is present in the User class
+
+step 04) app.component.html
+
+<label>Name</label>
+<input type="text"  #name2="ngModel" class="form-control" name="userName" [ngModel]="userModel.name">
+//[ngModel]="userModel.name" -> it will show whatever name is declare in the file
+
+<label>Email</label>
+<input type="email" class="form-control" name="email" [ngModel]="userModel.email">
+[ngModel]="userModel.email" -> it will show whatever email is declare in the file

@@ -1,0 +1,10 @@
+git clone https://github.com/amitjiwane/testing.git = it is used to copy the repository
+git branch 
+-> it is used to check the available branch.
+git checkout -b MyBranch 
+-> it used to create new branch (In that it is created "MyBranch" branch)
+git status = it is used to check file in that or not
+git add . = it is used add all the files in particular folder
+git commit -m "Done" = it is used to commit the code
+git push =  it is used to puch the code
+git push --set-upstream origin MyBranch = it is used to push code where u want to have this code in particular branch

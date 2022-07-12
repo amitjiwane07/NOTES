@@ -1,0 +1,51 @@
+Hibernate Annotations
+
+@Entity = if you declare class as @Entity then it will create table as class name
+@Table  = it is used to change the table name eg. @Table ("Hello")
+@Id     = it is used to declare particular variable as primary key
+@GenerateValue = if we do not declare value then it will generate value automatically in internal sequesnce
+@Column = it is used to specify column mappings, if we declare @column above particular variable name then we can change column name
+@Transient = if we have 4 columns in database, and we want to save only 3 then we havr to put @Transient where we dont want to save this field
+@Temporal = it is used over date, if we want to custom format of date then we can use it
+@Lob = it is used to identify as big object
+
+@Embeddable @Embedded =  two different class want to show in single table  
+@Flush = it is the combination of commit and close and it send object to garbage collection 
+@MappedSuperClass = if you declare this in perticular class then you can extends this class in another
+
+HashCode = it is necessary when we use duplicate object then it will identify using hashcode code
+
+jointColumn = it is always in the parent class,
+ A join column is need not to be a foreign key. 
+A join column is just used to link with another table. 
+
+@ManyToOne(cascade = CascadeType.ALL)
+private Story story;
+--------> In that case one fpreign key column will add,
+
+@ManyToOne(cascade = CascadeType.ALL)
+@JoinColumn(name = "amitStory", referencedColumnName = "storyId")
+private Story story;
+----------> In that case one foeign key column add and becoz for join column another column will add
+
+mapped by = it is always in the child class
+
+
+  @OneToOne(cascade = CascadeType.ALL) 
+// propagate all operation from parent to child
+     
+@OneToOne(cascade = CascadeType.PERSIST) 
+//transient instance to persistent, 
+//save parent object the automatically child object will 
+     
+@OneToOne(cascade = CascadeType.MERGE) 
+// merge from parent to child,
+//coping the state of the given object onto the persistent object with the identifire 
+     
+@OneToOne(cascade = CascadeType.REMOVE) // deletes the row corresponding to the entity from database parent to child, 
+     
+@OneToOne(cascade= CascadeType.DETACH) // detach removes the entity from the persistent context including child entity
+     
+@OneToOne(cascade=CascadeType.REFRESH) 
+// reread the value of a given instance from database. we can change an instance after
+//persisting in the database but later we need to undo those changes

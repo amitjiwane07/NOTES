@@ -1,0 +1,190 @@
+// all ther request land to Servlet container IP address and port number
+// every application contains web.xml, known as gateway of apllication
+//        Dispatcher serverlet known as front controller
+//DispatcherServlet TO ALL THE LISTED CONTROLLER
+
+web.xml -> controller -> DAO -> ORM -> Database
+
+@RestController, @Controller, @Bean = it used to create bean
+Que. - What is use of @RequestBody?
+@RequestBody and @ResponseBody annotations are used to bind the HTTP request/response body with a domain object in method parameter or return type. 
+Behind the scenes, these annotation uses HTTP Message converters to convert the body of HTTP request/response to domain objects.
+
+
+Que. - What is the use of @RestController?
+RestController is a Spring annotation that is used to build REST API in a declarative way. 
+RestController annotation is applied to a class to mark it as a request handler, 
+and Spring will do the building and provide the RESTful web service at runtime.
+
+@PostMapping = @PostMapping annotated methods handle the HTTP POST requests matched 
+
+@PathVariable (In the input if u want to pass parameter as URL then we use PathVariable)
+@PathVariable is a Spring annotation which indicates that a method parameter should be bound to a URI template variable. 
+If the method parameter is Map<String, String> then the map is populated with all path variable names and values
+
+@RequestParam =  we are expecting something from url
+
+flush =  it is used to delete the detached object 
+
+@OneToOne(cascade = CascadeType.ALL) = cascaden= it is used to perform operation on child table
+
+
+SEQUENCE FOR SPRING BOOT CRUD OPERATION
+
+Step 01 - Create Project SpringBoot
+
+Step 02 - Add dependencies spring web, Lambok(to declare getters and setters), spring data JPA, MySql Driver
+
+Step 03 - create package Controller, Service, Repository, Entity
+Step 04 - create Product class in Entity package
+step 05 - create ProductRepository in Repository package
+Step 06 - write configuration in Application.Properties for database connection
+Step 07 - Write all CRUD methods in Service package 
+
+
+
+  @GetMapping("/")
+    public List<Department> findAllDepartment(){
+        return departmentServiceImple.listAllDepartment();
+    }
+
+    @PostMapping("/")
+    public Department storeDepartment(@RequestBody Department department) {
+        return departmentServiceImple.saveDepartment(department);
+    }
+
+    @PutMapping("/")
+    public Department updateDepartment(@RequestBody Department department) {
+        return departmentServiceImple.saveDepartment(department);
+    }
+
+    @DeleteMapping
+    public String deletingDepartment(@RequestBody Department department) {
+        departmentServiceImple.deleteDepartment(department);
+        return "Deleted"+ department;
+    }
+
+
+public Employee saveEmployee(Employee employee);
+	
+	public List<Employee> getEmployee(List<Employee> employee);
+	
+	public Employee updateEmployee(Employee employee);
+	
+	public String deleteEmployee(Employee employee);
+
+
+
+@Controller => 
+It marks a class as a web request handler. It is often used to serve web pages. 
+By default, it returns a string that indicates which route to redirect. 
+It is mostly used with @RequestMapping annotation.
+
+@Service: It is also used at class level. It tells the Spring that class contains the business logic.
+
+@Repository: It is a class-level annotation. 
+The repository is a DAOs (Data Access Object) that access the database directly. 
+The repository does all the operations related to the database.
+
+Note :- 
+1) (@Repository) =  if we did not declare repository then also application can run
+2) (@Service) = if we do not declare @Service then application will not run
+3) (@Autowired) = if we do not declare @Autowired then NullPointerException will occur 
+4) (@PathVariable) = if we do not use @PathVariable then error occur like Id must not be null
+
+------------------------------------------------------------------------------
+Springboot-swagger3
+
+step 01) search swagger open ui dependency and add it in pom.xml
+                     <dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>1.6.6</version>
+		    </dependency>
+Note - first update project after adding dependency
+-------------------------------------------------------------
+step 02) fire http://localhost:9001/swagger-ui.html
+
+------------------------------------------------------------
+update method
+ serviceImple
+
+@Override
+public Book updateBook(Long id, Book book) {
+  Book existingBook = bookRepository.findById(id).get(); // first it will the object by id
+       existingBook.setBookName(book.getBookName());
+       existingBook.setBookPrice(book.getBookPrice());
+       Book book1 = bookRepository.save(existingBook);
+       return book1;
+}
+
+Controller
+
+@PutMapping("/update/{uId}")
+public Book modifyBook(@PathVariable Long uId, @RequestBody Book book) {
+       return bookServiceImple.updateBook(uId, book);
+}
+
+
+---------------------------------------------------------
+How to data through POSTMAN
+@OneToMany
+
+  {
+   "name":"Ashok",
+   "city":"Pune",
+   "course":[
+       {"couserName":"JAVA"},
+       {"couserName":"Python"},
+       {"couserName":"c++"}
+   ]   
+}
+----------------
+@ManyToOne
+
+many Book have one story
+structure for postman
+------------------
+[{
+		"bookId": 1,
+		"bookName": "Book1",
+		"story": {
+			"storyId": 2,
+			"storyName": "my story"
+		}
+	},
+	{
+		"bookId": 3,
+		"bookName": "Book2",
+		"story": {
+			"storyId": 2,
+			"storyName": "my story"
+		}
+	},
+	{
+		"bookId": 4,
+		"bookName": "Book3",
+		"story": {
+			"storyId": 2,
+			"storyName": "my story"
+		}
+	}
+]
+
+-------------------------------------------------------
+
+application.properties
+
+
+server.port=9090
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.datasource.url = jdbc:mysql://localhost:3306/sample25
+spring.datasource.username = root
+spring.datasource.password = Amit@123
+spring.jpa.show-sql = true
+spring.jpa.hibernate.ddl-auto = update
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5Dialect
+
+------------------------------------
+
+hH

@@ -1,0 +1,38 @@
+git --version
+git config --global user.name          = it is used to set name
+git config --global user.email         = it is used to set email
+
+git init                               = it is used to initialized
+git status                             = to check status
+git add [fileName]                     = to add particular file
+git add -A                             = it will add all files
+git commit -m "comment"
+git checkout                           = if changes made in file by mistake then u can fire this command, it will undo changes
+git diff                               = it will track the changes of current working directory only
+git diff -staged                       = it will track the changes of staging area
+git diff HEAD                          = u can track changes of commited file
+git log                                = it will show who change the code and what changes he have made, date and timing as well
+git rm -f [fileName]                      = it will removed totally(delete)
+git rm --catched [fileName]            = it will remove from stagin area 
+git branch --list                      = to show the branches
+git branch [newBranchName]             = it will create new branch
+git checkout [branchName]              = it will chance branch
+git branch -d [barnchName]             = to delete branch (after merge branch)
+git branch -D [barnchName]             = to delete branch (after merge branch) - capital D
+git merge [branchName]                 = to merge sub branchces to main (Note = u need to on main branch)
+git checkout -b [branchName]           = it will create new and and also switched to new One
+
+-------------------------------------------------------------------------------------------------------------------
+Ways to push code in Repository
+
+git init                                       = used to initialized                     
+git add -A                                     = it is used to add all files
+git commit -m 'Added my project'               = used to commit
+git remote add origin [gitHub URL Repository]  = used to add in perticular Repository
+git push -u -f origin master/main                   = used to push code in branch
+
+remote = means git provide cloud storage
+-f = The -f flag stands for force. This will automatically overwrite everything in the remote director
+-u = The -u flag sets the remote origin as the default. This lets you later easily just do git push and 
+     git pull without having to specifying an origin since we always want GitHub in this case.
+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

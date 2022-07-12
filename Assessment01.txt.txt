@@ -1,0 +1,29 @@
+Assessment01
+
+Q1. What are the major features in different versions of Spring Framework?
+Ans->dependency injection, events, resources, i18n, validation, data binding, type conversion, spel, aop. Transactions, DAO support, JDBC, ORM, XML.
+
+Q2. What is a Spring Framework?
+Ans-> Spring is the most popular application development framework for enterprise Java. Millions of developers around the world use Spring Framework to create high performing, easily testable, and reusable. The core features of the Spring Framework can be used in developing any Java application, but there are extensions for building web applications on top of the Java EE platform. Spring framework targets to make J2EE development easier to use and promotes good programming practices by enabling a POJO-based programming model code.
+
+Q3. List the advantages of Spring Framework?
+Ans->
+1.	Light Weight: Spring is a lightweight framework because of its POJO implementation. It does not force the programmer to inherit any class and implement any interface. With the help of Spring, we can enable powerful, scalable applications using POJOs (Plain Old Java Object).
+2.	Flexible: It provides flexible libraries trusted by developers all over the world. The developer can choose either XML or Java-based annotations for configuration options. The IoC and DI features provide the foundation for a wide-ranging set of features and functionality. It makes the job simpler.
+3.	Loose Coupling: Spring applications are loosely coupled because of dependency injection. It handles injecting dependent components without a component knowing where they came from.
+
+Q10. What do you mean by Dependency Injection?
+Ans-> Dependency Injection is the ability of an object to supply dependencies of another object.
+
+
+
+Q9. What is Spring IOC Container?
+Ans->
+The IoC container is responsible to instantiate, configure and assemble the objects. The IoC container gets information from the XML file and works accordingly. The main tasks performed by IoC container are:
+1)to instantiate the application class.
+2) to configure the object.
+3) to assemble the dependencies between the objects.
+Q6. What is a Spring configuration file?
+Ans-> Spring configuration file is a file with . xml extension and the file contains information about the classes and interfaces and their dependencies. Using this file the spring container controls the life cycle of a spring bean and also Dependency Injection is achieved.
+Q8. What are the various ways of using Spring Framework?
+Ans-> XML, annotations, Grails DSL and manually.

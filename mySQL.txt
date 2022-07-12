@@ -1,0 +1,127 @@
+Create database databaseName;  
+use databaseName;
+show databases;
+drop database databaseName;  
+
+create table student(columnName  dataType(size), columnName  dataType(size), columnName  dataType(size));
+create table student(RollNumber  int(20) primary key, Name varchar(30), City varchar(20));
+
+create table student(columnName  dataType(size)[constraints], columnName  dataType(size)[constraints]);
+create table student(RollNumber int(20) PRIMARY KEY, Name varchar(20) NOT NULL, City varchar(20));
+
+desc [tableName];
+drop table [tableName];
+
+alter table [existTableName] rename to [newTable]; //it is used to rename table
+alter table student rename to user; //it becomes user table after fire query
+
+truncate table [tableName]; // it delete all the data
+
+insert into student (Name, City, RollNumber) values("ASHOK", "pune",45);  //you can change the sequence of columns and you have to put accordingly
+insert into student values(12,"Amit","Nagpur");     //without changing sequence 
+
+ alter table [tableName] add [columnName] varchar(20);
+
+update [tableName] set [colName]="ashok" where [colName]="US"; //it will update the values
+update student set name="ashok" where country="US";
+
+delete from student where RollNumber=46;  //deleted whole row where rollN.=46
+
+---------------------------------WHERE clause - it is used to specify the condition-------------------------------------
+*(star) = it is all columns
+
+select * from student where city="solapur"; //it will fetch only records where city is solapur
+select rollnumber as id, name as studentName from student where city="solapur"; // it will change column name by using "as"
+
+----------------------------------------Distinct - it means different(no repeated data will be shown)-------------------------
+select distinct(city) from student;  // it will show all unique city name
+
+---------------------------------AND operator - it is used to join 2 conditions-------------------------------------
+select * from student where city="nagpur" and country="India";  //it will data where city same as nagpur and country same as INDIA
+select * from student where rollnumber>=39 and rollnumber<=89; 
+
+-------------------------------------OR operator----------------------------------------------------------------------
+select * from student where city="baramati" or country="INDIA";  
+
+---------------------------------between-------------------------------------------
+select * from student where rollnumber between 40 and 80;
+
+---------------------------IN - The IN operator allows you to specify multiple values in a WHERE clause.--------------------
+In - it is the operator basically get all the data where you mention the Ids
+select * from student where rollnumber in(34, 90);  //it fetch data where rollnumber is 34 and 90
+
+---------------------------Limit = it used when you want to get perticular range of data--------------------------
+limit 4 = you will get top 4 data
+offset 2 = it means it will skip top 2 data then print it
+
+-------------------------------------------Order by = it represents data in sequence--------------------------
+select * from student order by rollnumber;  //it will represents in ascending order
+select * from student order by rollnumber desc; //it will represents in descending order
+
+you want to get last 2 data
+select * from student order by rollnumber limit 2;
+
+------------------------------------Like Operator--------------------------------------------------------------
+% --> means multiple character
+_ --> means single character
+
+select * from student where name like "a%"; //we use % bcoz we dont know how many char are there after a alphabet
+select * from student where name like "_u%"; //it means 2nd letter us "u" bt after that alphabet we dont know how many alphates are there bcoz of that we use %
+select * from student where name like "%h_"; //2nd last char is h
+ 
+--------------------------SUM()---------------------------------------
+it will add the numbers
+
+select sum(rollnumber) from student;  //it will add all the rollnumbers
+select avg(rollnumber) from student;  //it will return avg og rollnumbers
+select count(name) from student;  //it will count number of rows
+
+---------------------------Min()-------------------------------------
+
+select Min(salary) from student; //it will return minimun salary
+
+--If we want to get name of person who has min salary
+
+select name from student where salary=(select min(salary) from student); //u will get name of person who has min salary
+select name from student where salary=(select max(salary) from student);  //u will get name of person who has min salary
+
+
+--------------------------------------Foreign key-----------------------------------
+we have 2 table
+1) employee (id, name, city, salary)
+2) laptops  (lid, lmodel, employeeId)
+
+create table laptops(lid int(20) primary key, lmodel varchar(30), employeeId int(20), foreign key(employeeId) references employee(id));
+create table laptops(colName dataType(size)[constraints], colName dataType(size), foreign key(declare which col u want to make foreignkey) references [oppositeTableName(pass col name of pri key)]
+
+Joins
+:- Join clause is used to combine rows from two or more tables, based on related column between them
+
+1) Inner Join
+:- returns records that have matching values between both tables
+
+select * from employee, laptops where employee.id=laptops.employeeId;
+select * from [tableName],[tableName2] where [tableName].parameter(which PrimaryKey)=[tableName].parameter(which is ForignKey);
+
+select * from employee JOIN laptops ON employee.id=laptops.employeeId;  //this is by using JOIN word
+
+Note:- if you have same parameter name in both tables
+       then u need to mention [tableName].parameter
+       select * from employee.id, name, city = like that otherwise will throw ambiguous 
+
+
+2) Left Outer Join
+:- Returns all record from left table, and the matched records from right tables
+
+select name, city, lmodel from employee LEFT JOIN laptops ON employee.id=laptops.employeeId;
+select [parameter],[parameter],[parameter from right table] from [left table] LEFT JOIN [right Table] ON [primarykey cloumn Name = forign Key Column Name];
+
+3) Right Outer Join
+:- Returns all records from right table and matched record from left table
+
+ select * from student RIGHT JOIN course ON student.sid=course.sid;
+
+4) CROSS JOIN
+:- Returns all the data from both table
+
+select * from student CROSS JOIN course;

@@ -1,0 +1,23 @@
+.abc = u can create class
+#abc = u can create ID
+
+Form
+Id= access within the code 
+name = it is used to fetch data from server or used to communicate with server
+autofocus = if u declare particular field as autofocus then cursur will go directly to that box
+pattern = if declare A-Z {5}, it will take only that range and 5 alphabets only
+readonly="readonly" = it will not let you change
+addEventListener('click',myFunction) = it is used to create custom event
+navigator = it is used to know the information abt browser
+
+clouser = it created function inside the function
+
+isNaN = not a number
+eval() =  calculate
+promt() = to get input
+
+* => it is used to get data from input
+$ => it is used to access data from database
+@ =>
+
+
